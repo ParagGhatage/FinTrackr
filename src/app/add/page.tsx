@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ function InputPage() {
   const handleChange = (category: ExpenseCategory, value: number) => {
     setExpenses((prevExpenses) => ({
       ...prevExpenses,
-      [category]: (value) , // Convert to number or set to 0
+      [category]: value, // Corrected unnecessary value conversion
     }));
   };
 
@@ -48,24 +48,23 @@ function InputPage() {
     }
 
     try {
-      // Mocking an API request
-       const res= await axios.post('/api/expense',{
-        email,
-        travel: Travel,
-        education: Education,
-        residential: Residential,
-        food: Food,
-        entertainment: Entertainment,
-        other: Other,
-        year,
-        month,
-      }, 
-       
-        {headers: { 'Content-Type': 'application/json' }},
-  
+      const res = await axios.post(
+        '/api/expense',
+        {
+          email,
+          travel: Travel,
+          education: Education,
+          residential: Residential,
+          food: Food,
+          entertainment: Entertainment,
+          other: Other,
+          year,
+          month,
+        },
+        { headers: { 'Content-Type': 'application/json' } }
       );
 
-      console.log(res)
+      console.log(res);
 
       alert("Expenses added successfully!");
       setExpenses({
@@ -83,17 +82,14 @@ function InputPage() {
   };
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-8 space-y-8 max-w-md mx-auto bg-white shadow-lg rounded-lg">
       <Link href={"/Reports"}>
-            <button
-            className='bg-blue-500 text-white p-4 rounded-md m-2'>
-              View reports
-            </button>
-            </Link>
-            <Button onClick={handleAddExpense} className='p-4'>
-        Add Expenses
-      </Button>
-      <div className="space-y-2">
+        <Button className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition duration-300">
+          View Reports
+        </Button>
+      </Link>
+
+      <div className="space-y-4">
         <Label htmlFor="email">Email:</Label>
         <Input
           id="email"
@@ -101,10 +97,12 @@ function InputPage() {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="w-full p-3 border border-gray-300 rounded-lg"
         />
       </div>
+
       {Object.keys(expenses).map((category) => (
-        <div key={category} className="space-y-2">
+        <div key={category} className="space-y-4">
           <Label htmlFor={category}>{category}:</Label>
           <Input
             id={category}
@@ -112,10 +110,12 @@ function InputPage() {
             placeholder={`Enter ${category} amount`}
             value={expenses[category as ExpenseCategory]} // Type assertion here
             onChange={(e) => handleChange(category as ExpenseCategory, parseInt(e.target.value))}
+            className="w-full p-3 border border-gray-300 rounded-lg"
           />
         </div>
       ))}
-      <div className="space-y-2">
+
+      <div className="space-y-4">
         <Label htmlFor="year">Year:</Label>
         <Input
           id="year"
@@ -123,9 +123,11 @@ function InputPage() {
           placeholder="Enter year"
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
+          className="w-full p-3 border border-gray-300 rounded-lg"
         />
       </div>
-      <div className="space-y-2">
+
+      <div className="space-y-4">
         <Label htmlFor="month">Month:</Label>
         <Input
           id="month"
@@ -133,9 +135,16 @@ function InputPage() {
           placeholder="Enter month (1-12)"
           value={month}
           onChange={(e) => setMonth(parseInt(e.target.value))}
+          className="w-full p-3 border border-gray-300 rounded-lg"
         />
       </div>
-      
+
+      <Button
+        onClick={handleAddExpense}
+        className="w-full bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 transition duration-300"
+      >
+        Add Expenses
+      </Button>
     </div>
   );
 }
