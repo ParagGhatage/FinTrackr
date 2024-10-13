@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server';
 import UserModel from '@/models/User.model';
 import ExpenseModel from '@/models/Expenses.model';
-import mongoose from 'mongoose';
 import dbConnect from '@/lib/DB_connect';
 
 

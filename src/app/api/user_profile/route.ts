@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import UserModel from '@/models/User.model'; // Adjust the path as necessary
-import mongoose from 'mongoose';
 import dbConnect from '@/lib/DB_connect';
 
 

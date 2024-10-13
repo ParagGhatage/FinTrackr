@@ -2,14 +2,17 @@
 import { NextResponse } from 'next/server';
 import UserModel from '@/models/User.model';
 import ExpenseModel from '@/models/Expenses.model';
-import mongoose from 'mongoose';
 import dbConnect from '@/lib/DB_connect';
 
 // Handler function for the GET request
 export async function GET(request: Request) {
-    await dbConnect()
-    // Extracting query parameters
-    const { email,year,month } = await request.json();
+    await dbConnect();
+
+    // Extracting query parameters from the request URL
+    const url = new URL(request.url);
+    const email = url.searchParams.get('email');
+    const year = url.searchParams.get('year');
+    const month = url.searchParams.get('month');
 
     if (!email || !year || !month) {
         return NextResponse.json({ error: 'Email, year, and month are required' }, { status: 400 });
@@ -43,7 +46,7 @@ export async function GET(request: Request) {
             residential: expenseDoc.residential,
             food: expenseDoc.food,
             entertainment: expenseDoc.entertainment,
-            other:expenseDoc.other,
+            other: expenseDoc.other,
             totalExpense,
         };
 

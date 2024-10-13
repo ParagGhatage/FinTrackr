@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import axios from 'axios';
+import Link from 'next/link';
 
 // Define the specific categories as a type
 type ExpenseCategory = 'Travel' | 'Food' | 'Education' | 'Residential' | 'Other' | 'Entertainment';
@@ -31,10 +32,10 @@ function InputPage() {
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1); // Months are zero-based
 
-  const handleChange = (category: ExpenseCategory, value: string) => {
+  const handleChange = (category: ExpenseCategory, value: number) => {
     setExpenses((prevExpenses) => ({
       ...prevExpenses,
-      [category]: Number(value) || 0, // Convert to number or set to 0
+      [category]: (value) , // Convert to number or set to 0
     }));
   };
 
@@ -83,6 +84,15 @@ function InputPage() {
 
   return (
     <div className="p-8 space-y-6">
+      <Link href={"/Reports"}>
+            <button
+            className='bg-blue-500 text-white p-4 rounded-md m-2'>
+              View reports
+            </button>
+            </Link>
+            <Button onClick={handleAddExpense} className='p-4'>
+        Add Expenses
+      </Button>
       <div className="space-y-2">
         <Label htmlFor="email">Email:</Label>
         <Input
@@ -101,7 +111,7 @@ function InputPage() {
             type="number"
             placeholder={`Enter ${category} amount`}
             value={expenses[category as ExpenseCategory]} // Type assertion here
-            onChange={(e) => handleChange(category as ExpenseCategory, e.target.value)}
+            onChange={(e) => handleChange(category as ExpenseCategory, parseInt(e.target.value))}
           />
         </div>
       ))}
@@ -122,12 +132,10 @@ function InputPage() {
           type="number"
           placeholder="Enter month (1-12)"
           value={month}
-          onChange={(e) => setMonth(Number(e.target.value))}
+          onChange={(e) => setMonth(parseInt(e.target.value))}
         />
       </div>
-      <Button onClick={handleAddExpense}>
-        Add Expenses
-      </Button>
+      
     </div>
   );
 }
